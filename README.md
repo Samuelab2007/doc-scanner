@@ -24,7 +24,10 @@ Equalización de histogramas: Es una técnica de mejoramiento de contraste utili
 
 Binarización: Técnica utilizada para convertir una imagen en escala de grises o a color a una imagen binaria(compuesta de unos y ceros), donde 0 representa el fondo. Es un proceso fundamental para posteriormente aplicar OCR.
 
-Método Otsu:
+Método Otsu: Método global de "thresholding" en el que se separan los pixeles de una imagen de entrada en múltiples clases, cada una obtenida de acuerdo a la intensidad de los niveles de gris de la imagen.
+Calcula múltiples "umbrales", determinados por el número de clases deseadas.
+
+Diferencia entre thresholding global y local. Cuando se hace local, se pueden usar diferentes umbrales para diferentes zonas de la imagen, mientra que para un método global se utiliza el mismo umbral para toda la imagen.
 
 ## Artefacto final
 
