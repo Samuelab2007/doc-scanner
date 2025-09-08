@@ -26,18 +26,20 @@ def detect_language(text_input):
 
 
 def perform_ocr(image, output):
-    text = pytesseract.image_to_string((image), lang="eng+spa+deu")
+    try:
+        text = pytesseract.image_to_string((image), lang="eng+spa+deu")
 
-    lang = detect_language(text)
+        lang = detect_language(text)
 
-    # Maps to language convention used by tesseract. Defaults to "eng" if none are found
-    mapped_lang = LANG_MAP.get(lang, "eng")
+        # Maps to language convention used by tesseract. Defaults to "eng" if none are found
+        mapped_lang = LANG_MAP.get(lang, "eng")
 
-    doc = pytesseract.image_to_pdf_or_hocr(image, lang=mapped_lang, extension="pdf")
-
-    with open(output, "wb") as f:
-        f.write(doc)
+        doc = pytesseract.image_to_pdf_or_hocr(image, lang=mapped_lang, extension="pdf")
+        with open(output, "wb") as f:
+            f.write(doc)
     
-    print(f"File saved to {output}")
+        print(f"File saved to {output}")
+    except Exception:
+        print("Something went wrong while performing OCR")
 
 # TODO: Introduce some kind of batch processing. 
