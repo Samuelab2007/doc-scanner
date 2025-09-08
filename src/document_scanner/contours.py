@@ -7,33 +7,18 @@ def get_page_contour(img):
     page_contour = max(contours, key=cv.contourArea)
     return page_contour
 
-"""
-TODO: Change strategy, create fallback for the cases when 4 corners cannot be found
-Either there are too many corners or not enough.
-
-Possible approaches: 
-
-Relax the epsilon factor
-    If the contour approximation is too tight, you might get 5–6 points; too loose, maybe 3 points.
-
-    Try decreasing/increasing epsilon_factor and retry.
-
-Pick the largest 4-sided contour in the image
-    Filter contours by cv.isContourConvex and len(approx) == 4.
-
-    If none found, use the bounding rectangle of the largest contour.
-
-Force a rectangle from convex hull
-    Take the convex hull → minimum area rectangle with cv.minAreaRect() → get 4 points.
-
-"""
+# Finds a convex Hull around the largest contour to reduce the contour complexity.
+# Then approximate a polynomial to find the 4 corners.
 def find_corners(contour):
-    for factor in [0.02, 0.015, 0.01, 0.005]:
-        epsilon = factor * cv.arcLength(contour, True)  # precision: smaller = more points
-        corners = cv.approxPolyDP(contour, epsilon, True)  # approximate polygon
-        if len(corners) == 4:
+
+    # Approximates contour using a convex hull
+    contour = cv.convexHull(contour)
+    
+    epsilon = 0.02 * cv.arcLength(contour, True)  # precision: smaller = more points
+    corners = cv.approxPolyDP(contour, epsilon, True)  # approximate polygon
+    if len(corners) == 4:
             # If it has 4 sides, then return the corner coordinates. We flatten it before
-            return corners.reshape(4, 2).astype("float32")
+        return corners.reshape(4, 2).astype("float32")
     raise ContourNotFoundError("Couldnt find a contour with exactly 4 corners")
 
 def reorder_points(pts):
