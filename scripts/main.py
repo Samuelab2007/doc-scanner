@@ -1,5 +1,5 @@
 import cv2 as cv
-from document_scanner import contours, preprocessing, transform
+from document_scanner import contours, preprocessing, transform, ocr
 
 img = cv.imread('examples/images/libro.jpg', cv.IMREAD_COLOR_BGR)
 # Use the cvtColor() function to grayscale the image
@@ -46,12 +46,11 @@ dst, max_w, max_h = contours.find_destination_points(rect)
 # Perform perspective transform on original image
 warped = transform.warp_perspective(img, rect, dst, max_w, max_h)
 
-# Obtain only the now corrected page
-
-
 # OCR
+ocr.perform_ocr(warped, "./example.pdf")
 
 
+cv.imwrite("result.jpg", warped)
 
 cv.imshow("Corrected image", warped)
 cv.waitKey(0)
