@@ -25,7 +25,7 @@ def detect_language(text_input):
     return detect(text_input)
 
 
-def perform_ocr(image, output):
+def perform_ocr(image):
     try:
         text = pytesseract.image_to_string((image), lang="eng+spa+deu")
 
@@ -35,10 +35,7 @@ def perform_ocr(image, output):
         mapped_lang = LANG_MAP.get(lang, "eng")
 
         doc = pytesseract.image_to_pdf_or_hocr(image, lang=mapped_lang, extension="pdf")
-        with open(output, "wb") as f:
-            f.write(doc)
-    
-        print(f"File saved to {output}")
+        return doc
     except Exception:
         print("Something went wrong while performing OCR")
 

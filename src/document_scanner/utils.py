@@ -20,3 +20,12 @@ def show_img(title, img):
     cv.imshow(f"{title}", img)
     cv.waitKey(0)
     cv.destroyAllWindows()
+
+def save_file(doc, filepath):
+    try:
+        with open(filepath, "wb") as f:
+            f.write(doc)
+    
+        print(f"File saved to {filepath}")
+    except Exception:
+        print("File couldn't be saved")

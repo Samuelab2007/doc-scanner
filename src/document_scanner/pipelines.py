@@ -1,7 +1,8 @@
 import cv2 as cv
-from document_scanner import contours, preprocessing, transform, utils
+import numpy as np
+from document_scanner import contours, preprocessing, transform, utils, ocr
 
-def process_basic(image_path:str, debug:bool = False):
+def process_basic(img: np.ndarray, debug:bool = False):
     """
     Full pipeline to process a document image:
     - Grayscale + equalize histogram
@@ -10,9 +11,6 @@ def process_basic(image_path:str, debug:bool = False):
     - Warp perspective to obtain corrected page
     Returns the corrected (warped) document image.
     """
-
-    # Load image
-    img = utils.read_img(image_path)
 
     # Step 1: Grayscale
     gray_image = utils.convert_grayscale(img)
@@ -40,4 +38,6 @@ def process_basic(image_path:str, debug:bool = False):
 
     if debug: utils.show_img("Corrected image", warped)
 
-    return warped
+    # Step 7: Create a pdf with the warped image and return it
+    doc = ocr.perform_ocr(warped)
+    return doc
