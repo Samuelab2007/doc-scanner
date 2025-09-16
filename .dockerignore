@@ -1,0 +1,21 @@
+# Version control
+.git/
+.gitignore
+
+# Development folders
+tests/
+examples/
+scripts/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+
